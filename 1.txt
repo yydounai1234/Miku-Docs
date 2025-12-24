@@ -1,0 +1,884 @@
+{
+    "type": "object",
+    "properties": {
+        "enable": {
+            "type": "boolean",
+            "description": "是否启用该配置"
+        },
+        "bucketId": {
+            "type": "string",
+            "description": "存储空间ID"
+        },
+        "region": {
+            "type": "string",
+            "description": "区域"
+        },
+        "domain": {
+            "type": "string",
+            "description": "域名"
+        },
+        "cname": {
+            "type": "string",
+            "description": "CNAME记录"
+        },
+        "type": {
+            "type": "string",
+            "description": "类型"
+        },
+        "auth": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "防盗链类型"
+                },
+                "enable": {
+                    "type": "boolean",
+                    "description": "是否启用防盗链"
+                },
+                "primaryKey": {
+                    "type": "string",
+                    "description": "主密钥"
+                },
+                "secondaryKey": {
+                    "type": "string",
+                    "description": "从密钥"
+                },
+                "expireSeconds": {
+                    "type": "integer",
+                    "description": "过期时间（秒）"
+                }
+            },
+            "required": [
+                "type",
+                "enable",
+                "primaryKey",
+                "secondaryKey",
+                "expireSeconds"
+            ],
+            "x-apifox-orders": [
+                "type",
+                "enable",
+                "primaryKey",
+                "secondaryKey",
+                "expireSeconds"
+            ],
+            "description": "防盗链配置"
+        },
+        "thirdAuth": {
+            "type": "object",
+            "properties": {
+                "enable": {
+                    "type": "boolean",
+                    "description": "是否启用第三方鉴权"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "第三方鉴权类型"
+                },
+                "authUrl": {
+                    "type": "string",
+                    "description": "鉴权URL"
+                },
+                "backupUrl": {
+                    "type": "string",
+                    "description": "备用鉴权URL"
+                },
+                "customTag": {
+                    "type": "string",
+                    "description": "自定义标签"
+                },
+                "method": {
+                    "type": "string",
+                    "description": "请求方法"
+                },
+                "timeoutMs": {
+                    "type": "integer",
+                    "description": "超时时间（毫秒）"
+                },
+                "enableAsync": {
+                    "type": "boolean",
+                    "description": "是否启用异步鉴权"
+                },
+                "failedPass": {
+                    "type": "boolean",
+                    "description": "鉴权失败是否放行"
+                },
+                "retryTimes": {
+                    "type": "integer",
+                    "description": "重试次数"
+                },
+                "monitoring": {
+                    "type": "boolean",
+                    "description": "是否开启监控"
+                },
+                "cacheExpireMs": {
+                    "type": "integer",
+                    "description": "缓存过期时间（毫秒）"
+                },
+                "cacheKey": {
+                    "type": "string",
+                    "description": "缓存键"
+                }
+            },
+            "required": [
+                "enable",
+                "type",
+                "authUrl",
+                "backupUrl",
+                "customTag",
+                "method",
+                "timeoutMs",
+                "enableAsync",
+                "failedPass",
+                "retryTimes",
+                "monitoring",
+                "cacheExpireMs",
+                "cacheKey"
+            ],
+            "x-apifox-orders": [
+                "enable",
+                "type",
+                "authUrl",
+                "backupUrl",
+                "customTag",
+                "method",
+                "timeoutMs",
+                "enableAsync",
+                "failedPass",
+                "retryTimes",
+                "monitoring",
+                "cacheExpireMs",
+                "cacheKey"
+            ],
+            "description": "第三方鉴权配置"
+        },
+        "bframeConfig": {
+            "type": "object",
+            "properties": {},
+            "x-apifox-orders": [],
+            "description": "B帧配置"
+        },
+        "streamConf": {
+            "type": "object",
+            "properties": {
+                "lastModified": {
+                    "type": "string",
+                    "description": "最后修改时间"
+                },
+                "gopCacheMode": {
+                    "type": "integer",
+                    "description": "GOP缓存模式"
+                },
+                "gopCacheNum": {
+                    "type": "integer",
+                    "description": "GOP缓存数量"
+                },
+                "enableTimestampModify": {
+                    "type": "boolean",
+                    "description": "是否启用时间戳修改"
+                },
+                "enableAvTsAlign": {
+                    "type": "boolean",
+                    "description": "是否启用音视频时间戳对齐"
+                },
+                "disableHttpChunk": {
+                    "type": "boolean",
+                    "description": "是否禁用HTTP Chunk"
+                },
+                "noDataTimeout": {
+                    "type": "integer",
+                    "description": "无数据超时时间（秒）"
+                },
+                "hlsType": {
+                    "type": "integer",
+                    "description": "HLS类型"
+                },
+                "hlsSegmentDuration": {
+                    "type": "integer",
+                    "description": "HLS切片时长（秒）"
+                },
+                "hlsM3u8Expired": {
+                    "type": "integer",
+                    "description": "HLS m3u8文件过期时间（秒）"
+                },
+                "hlsSegmentExpired": {
+                    "type": "integer",
+                    "description": "HLS切片过期时间（秒）"
+                },
+                "enableDelayPlay": {
+                    "type": "boolean",
+                    "description": "是否启用延迟播放"
+                },
+                "expectedDelayTimeSecond": {
+                    "type": "integer",
+                    "description": "预期延迟时间（秒）"
+                },
+                "disablePublisherBattle": {
+                    "type": "boolean",
+                    "description": "是否禁用发布者竞争"
+                },
+                "enableBackupPublish": {
+                    "type": "boolean",
+                    "description": "是否启用备份发布"
+                },
+                "policyForSamePriority": {
+                    "type": "string",
+                    "description": "相同优先级策略"
+                },
+                "priorityKey": {
+                    "type": "string",
+                    "description": "优先级键"
+                },
+                "disableHls": {
+                    "type": "boolean",
+                    "description": "是否禁用HLS"
+                },
+                "enableWhep": {
+                    "type": "boolean",
+                    "description": "是否启用WHEP"
+                },
+                "enableTimeStamp": {
+                    "type": "boolean",
+                    "description": "是否启用时间戳"
+                },
+                "enableBackupOriginUrl": {
+                    "type": "boolean",
+                    "description": "是否启用备份源URL"
+                },
+                "dropIdlePuller": {
+                    "type": "integer",
+                    "description": "丢弃空闲拉流器"
+                },
+                "pullerCheckLagDuration": {
+                    "type": "integer",
+                    "description": "拉流器检查延迟时长（毫秒）"
+                },
+                "dropLagPullerThreshold": {
+                    "type": "integer",
+                    "description": "丢弃延迟拉流器阈值（毫秒）"
+                },
+                "enableDropLagCustomPuller": {
+                    "type": "boolean",
+                    "description": "是否启用丢弃延迟自定义拉流器"
+                },
+                "avQueueSize": {
+                    "type": "integer",
+                    "description": "音视频队列大小"
+                },
+                "dropFrameMode": {
+                    "type": "integer",
+                    "description": "丢帧模式"
+                },
+                "relayConnectTimeout": {
+                    "type": "integer",
+                    "description": "转发连接超时时间（毫秒）"
+                },
+                "enableXsStream": {
+                    "type": "boolean",
+                    "description": "是否启用XS流"
+                },
+                "dashSegmentDuration": {
+                    "type": "integer",
+                    "description": "DASH切片时长（秒）"
+                },
+                "dashMpdExpired": {
+                    "type": "integer",
+                    "description": "DASH MPD文件过期时间（秒）"
+                },
+                "dashSegmentExpired": {
+                    "type": "integer",
+                    "description": "DASH切片过期时间（秒）"
+                },
+                "dashSegmentNumber": {
+                    "type": "integer",
+                    "description": "DASH切片数量"
+                },
+                "disableDash": {
+                    "type": "boolean",
+                    "description": "是否禁用DASH"
+                },
+                "disableLogging": {
+                    "type": "boolean",
+                    "description": "是否禁用日志"
+                },
+                "enableNetStat": {
+                    "type": "boolean",
+                    "description": "是否启用网络统计"
+                },
+                "enableAltSvc": {
+                    "type": "boolean",
+                    "description": "是否启用Alt服务"
+                },
+                "enableWtPool": {
+                    "type": "boolean",
+                    "description": "是否启用工作线程池"
+                },
+                "fastSendTime": {
+                    "type": "integer",
+                    "description": "快速发送时间（毫秒）"
+                },
+                "disableFollw302": {
+                    "type": "boolean",
+                    "description": "是否禁用跟随302"
+                },
+                "ignoreRedirect": {
+                    "type": "boolean",
+                    "description": "是否忽略重定向"
+                },
+                "codecTimeStampFollowFrame": {
+                    "type": "boolean",
+                    "description": "编解码器时间戳是否跟随帧"
+                },
+                "enablePacer": {
+                    "type": "boolean",
+                    "description": "是否启用速率控制器"
+                },
+                "disableExtraQos": {
+                    "type": "boolean",
+                    "description": "是否禁用额外QoS"
+                },
+                "enablePassThrough": {
+                    "type": "boolean",
+                    "description": "是否启用透传"
+                },
+                "whepDropBFrame": {
+                    "type": "boolean",
+                    "description": "WHEP是否丢弃B帧"
+                },
+                "enableForceUDP": {
+                    "type": "boolean",
+                    "description": "是否强制使用UDP"
+                },
+                "whepQueueSize": {
+                    "type": "integer",
+                    "description": "WHEP队列大小"
+                },
+                "whepStatsIntvSec": {
+                    "type": "integer",
+                    "description": "WHEP统计间隔时间（秒）"
+                },
+                "whepICETimeout": {
+                    "type": "integer",
+                    "description": "WHEP ICE超时时间（毫秒）"
+                },
+                "whepSrtpProfile": {
+                    "type": "integer",
+                    "description": "WHEP SRTP配置文件"
+                },
+                "whepFecRatio": {
+                    "type": "integer",
+                    "description": "WHEP FEC比率"
+                },
+                "whepNackSize": {
+                    "type": "integer",
+                    "description": "WHEP NACK大小"
+                },
+                "whepPlayoutDelay": {
+                    "type": "integer",
+                    "description": "WHEP播放延迟（毫秒）"
+                },
+                "whepMaxRedLevel": {
+                    "type": "integer",
+                    "description": "WHEP最大RED级别"
+                },
+                "whepFecMode": {
+                    "type": "integer",
+                    "description": "WHEP FEC模式"
+                },
+                "whepMtu": {
+                    "type": "integer",
+                    "description": "WHEP MTU"
+                },
+                "enableRtcpXr": {
+                    "type": "boolean",
+                    "description": "是否启用RTCP XR"
+                },
+                "enableAudioNack": {
+                    "type": "boolean",
+                    "description": "是否启用音频NACK"
+                },
+                "bFrameDetectionTimeout": {
+                    "type": "integer",
+                    "description": "B帧检测超时时间（毫秒）"
+                },
+                "switcherConfig": {
+                    "type": "object",
+                    "properties": {
+                        "enable": {
+                            "type": "boolean",
+                            "description": "是否启用切换器"
+                        },
+                        "delayLimit": {
+                            "type": "integer",
+                            "description": "延迟限制（毫秒）"
+                        },
+                        "consecutiveAbnormal": {
+                            "type": "integer",
+                            "description": "连续异常次数"
+                        },
+                        "cooldown": {
+                            "type": "integer",
+                            "description": "冷却时间（毫秒）"
+                        },
+                        "burstSize": {
+                            "type": "integer",
+                            "description": "突发大小"
+                        },
+                        "warmupMinBursts": {
+                            "type": "integer",
+                            "description": "预热最小突发数"
+                        },
+                        "warmupMaxTime": {
+                            "type": "integer",
+                            "description": "预热最大时间（毫秒）"
+                        },
+                        "extremeFactorLimit": {
+                            "type": "integer",
+                            "description": "极端因子限制"
+                        }
+                    },
+                    "required": [
+                        "enable",
+                        "delayLimit",
+                        "consecutiveAbnormal",
+                        "cooldown",
+                        "burstSize",
+                        "warmupMinBursts",
+                        "warmupMaxTime",
+                        "extremeFactorLimit"
+                    ],
+                    "x-apifox-orders": [
+                        "enable",
+                        "delayLimit",
+                        "consecutiveAbnormal",
+                        "cooldown",
+                        "burstSize",
+                        "warmupMinBursts",
+                        "warmupMaxTime",
+                        "extremeFactorLimit"
+                    ],
+                    "description": "切换器配置"
+                },
+                "enableHuyaPullerRetry": {
+                    "type": "boolean"
+                },
+                "pullerRetryInterval": {
+                    "type": "integer"
+                },
+                "pullerRetryCount": {
+                    "type": "integer"
+                },
+                "playback": {
+                    "type": "object",
+                    "properties": {
+                        "enable": {
+                            "type": "boolean",
+                            "description": "是否启用回放"
+                        },
+                        "startKey": {
+                            "type": "string",
+                            "description": "开始键"
+                        },
+                        "endKey": {
+                            "type": "string",
+                            "description": "结束键"
+                        }
+                    },
+                    "required": [
+                        "enable",
+                        "startKey",
+                        "endKey"
+                    ],
+                    "x-apifox-orders": [
+                        "enable",
+                        "startKey",
+                        "endKey"
+                    ],
+                    "description": "回放配置"
+                },
+                "common": {
+                    "type": "integer",
+                    "description": "通用配置"
+                },
+                "disableBFrameDetection": {
+                    "type": "boolean",
+                    "description": "是否禁用B帧检测"
+                },
+                "enableHlsQueryPassthrough": {
+                    "type": "boolean",
+                    "description": "是否启用HLS查询透传"
+                },
+                "prePull": {
+                    "type": "object",
+                    "properties": {
+                        "enable": {
+                            "type": "boolean",
+                            "description": "是否启用预拉流"
+                        },
+                        "retryInterval": {
+                            "type": "integer",
+                            "description": "重试间隔（毫秒）"
+                        },
+                        "retryCount": {
+                            "type": "integer",
+                            "description": "重试次数"
+                        }
+                    },
+                    "required": [
+                        "enable",
+                        "retryInterval",
+                        "retryCount"
+                    ],
+                    "x-apifox-orders": [
+                        "enable",
+                        "retryInterval",
+                        "retryCount"
+                    ],
+                    "description": "预拉流配置"
+                }
+            },
+            "required": [
+                "lastModified",
+                "gopCacheMode",
+                "gopCacheNum",
+                "enableTimestampModify",
+                "enableAvTsAlign",
+                "disableHttpChunk",
+                "noDataTimeout",
+                "hlsType",
+                "hlsSegmentDuration",
+                "hlsM3u8Expired",
+                "hlsSegmentExpired",
+                "enableDelayPlay",
+                "expectedDelayTimeSecond",
+                "disablePublisherBattle",
+                "enableBackupPublish",
+                "policyForSamePriority",
+                "priorityKey",
+                "disableHls",
+                "enableWhep",
+                "enableTimeStamp",
+                "enableBackupOriginUrl",
+                "dropIdlePuller",
+                "pullerCheckLagDuration",
+                "dropLagPullerThreshold",
+                "enableDropLagCustomPuller",
+                "avQueueSize",
+                "dropFrameMode",
+                "relayConnectTimeout",
+                "enableXsStream",
+                "dashSegmentDuration",
+                "dashMpdExpired",
+                "dashSegmentExpired",
+                "dashSegmentNumber",
+                "disableDash",
+                "disableLogging",
+                "enableNetStat",
+                "enableAltSvc",
+                "enableWtPool",
+                "fastSendTime",
+                "disableFollw302",
+                "ignoreRedirect",
+                "codecTimeStampFollowFrame",
+                "enablePacer",
+                "disableExtraQos",
+                "enablePassThrough",
+                "whepDropBFrame",
+                "enableForceUDP",
+                "whepQueueSize",
+                "whepStatsIntvSec",
+                "whepICETimeout",
+                "whepSrtpProfile",
+                "whepFecRatio",
+                "whepNackSize",
+                "whepPlayoutDelay",
+                "whepMaxRedLevel",
+                "whepFecMode",
+                "whepMtu",
+                "enableRtcpXr",
+                "enableAudioNack",
+                "bFrameDetectionTimeout",
+                "switcherConfig",
+                "enableHuyaPullerRetry",
+                "pullerRetryInterval",
+                "pullerRetryCount",
+                "playback",
+                "common",
+                "disableBFrameDetection",
+                "enableHlsQueryPassthrough",
+                "prePull"
+            ],
+            "x-apifox-orders": [
+                "lastModified",
+                "gopCacheMode",
+                "gopCacheNum",
+                "enableTimestampModify",
+                "enableAvTsAlign",
+                "disableHttpChunk",
+                "noDataTimeout",
+                "hlsType",
+                "hlsSegmentDuration",
+                "hlsM3u8Expired",
+                "hlsSegmentExpired",
+                "enableDelayPlay",
+                "expectedDelayTimeSecond",
+                "disablePublisherBattle",
+                "enableBackupPublish",
+                "policyForSamePriority",
+                "priorityKey",
+                "disableHls",
+                "enableWhep",
+                "enableTimeStamp",
+                "enableBackupOriginUrl",
+                "dropIdlePuller",
+                "pullerCheckLagDuration",
+                "dropLagPullerThreshold",
+                "enableDropLagCustomPuller",
+                "avQueueSize",
+                "dropFrameMode",
+                "relayConnectTimeout",
+                "enableXsStream",
+                "dashSegmentDuration",
+                "dashMpdExpired",
+                "dashSegmentExpired",
+                "dashSegmentNumber",
+                "disableDash",
+                "disableLogging",
+                "enableNetStat",
+                "enableAltSvc",
+                "enableWtPool",
+                "fastSendTime",
+                "disableFollw302",
+                "ignoreRedirect",
+                "codecTimeStampFollowFrame",
+                "enablePacer",
+                "disableExtraQos",
+                "enablePassThrough",
+                "whepDropBFrame",
+                "enableForceUDP",
+                "whepQueueSize",
+                "whepStatsIntvSec",
+                "whepICETimeout",
+                "whepSrtpProfile",
+                "whepFecRatio",
+                "whepNackSize",
+                "whepPlayoutDelay",
+                "whepMaxRedLevel",
+                "whepFecMode",
+                "whepMtu",
+                "enableRtcpXr",
+                "enableAudioNack",
+                "bFrameDetectionTimeout",
+                "switcherConfig",
+                "enableHuyaPullerRetry",
+                "pullerRetryInterval",
+                "pullerRetryCount",
+                "playback",
+                "common",
+                "disableBFrameDetection",
+                "enableHlsQueryPassthrough",
+                "prePull"
+            ],
+            "description": "流媒体配置"
+        },
+        "origin": {
+            "type": "object",
+            "properties": {
+                "enable": {
+                    "type": "boolean",
+                    "description": "是否启用回源"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "回源类型"
+                },
+                "url": {
+                    "type": "string",
+                    "description": "回源URL"
+                },
+                "urlBackup": {
+                    "type": "string",
+                    "description": "备用回源URL"
+                },
+                "timeout": {
+                    "type": "integer",
+                    "description": "回源超时时间（毫秒）"
+                },
+                "retryTimes": {
+                    "type": "integer",
+                    "description": "回源重试次数"
+                },
+                "followISP": {
+                    "type": "boolean",
+                    "description": "是否跟随ISP"
+                },
+                "app": {
+                    "type": "string",
+                    "description": "应用名称"
+                }
+            },
+            "required": [
+                "enable",
+                "type",
+                "url",
+                "urlBackup",
+                "timeout",
+                "retryTimes",
+                "followISP",
+                "app"
+            ],
+            "x-apifox-orders": [
+                "enable",
+                "type",
+                "url",
+                "urlBackup",
+                "timeout",
+                "retryTimes",
+                "followISP",
+                "app"
+            ],
+            "description": "回源配置"
+        },
+        "certificateID": {
+            "type": "string",
+            "description": "证书ID"
+        },
+        "creationDate": {
+            "type": "string",
+            "description": "创建时间"
+        },
+        "lastModified": {
+            "type": "string",
+            "description": "最后修改时间"
+        },
+        "urlRewrites": {
+            "type": "null",
+            "description": "URL重写规则"
+        },
+        "forward": {
+            "type": "object",
+            "properties": {
+                "enable": {
+                    "type": "boolean",
+                    "description": "是否启用转发"
+                },
+                "cenable": {
+                    "type": "boolean",
+                    "description": "C启用"
+                },
+                "items": {
+                    "type": "null",
+                    "description": "转发项"
+                }
+            },
+            "required": [
+                "enable",
+                "cenable",
+                "items"
+            ],
+            "x-apifox-orders": [
+                "enable",
+                "cenable",
+                "items"
+            ],
+            "description": "转发配置"
+        },
+        "httpsEnable": {
+            "type": "boolean",
+            "description": "是否启用HTTPS"
+        },
+        "ipLimit": {
+            "type": "object",
+            "properties": {
+                "whitelist": {
+                    "type": "null",
+                    "description": "白名单"
+                },
+                "blacklist": {
+                    "type": "null",
+                    "description": "黑名单"
+                }
+            },
+            "required": [
+                "whitelist",
+                "blacklist"
+            ],
+            "x-apifox-orders": [
+                "whitelist",
+                "blacklist"
+            ],
+            "description": "IP限制配置"
+        },
+        "refererSecurity": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "Referer类型"
+                },
+                "list": {
+                    "type": "null",
+                    "description": "Referer列表"
+                },
+                "includeEmpty": {
+                    "type": "boolean",
+                    "description": "是否包含空Referer"
+                }
+            },
+            "required": [
+                "type",
+                "list",
+                "includeEmpty"
+            ],
+            "x-apifox-orders": [
+                "type",
+                "list",
+                "includeEmpty"
+            ],
+            "description": "Referer安全配置"
+        }
+    },
+    "required": [
+        "enable",
+        "bucketId",
+        "region",
+        "domain",
+        "cname",
+        "type",
+        "auth",
+        "thirdAuth",
+        "bframeConfig",
+        "streamConf",
+        "origin",
+        "certificateID",
+        "creationDate",
+        "lastModified",
+        "urlRewrites",
+        "forward",
+        "httpsEnable",
+        "ipLimit",
+        "refererSecurity"
+    ],
+    "x-apifox-orders": [
+        "enable",
+        "bucketId",
+        "region",
+        "domain",
+        "cname",
+        "type",
+        "auth",
+        "thirdAuth",
+        "bframeConfig",
+        "streamConf",
+        "origin",
+        "certificateID",
+        "creationDate",
+        "lastModified",
+        "urlRewrites",
+        "forward",
+        "httpsEnable",
+        "ipLimit",
+        "refererSecurity"
+    ]
+}

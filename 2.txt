@@ -1,0 +1,28 @@
+## 响应参数
+| 参数名称 | 类型 | 说明 |
+|:--------------|:------|:------|
+| enable | boolean | 是否启用该配置 |
+| bucketId | string | 存储空间ID |
+| region | string | 区域 |
+| domain | string | 域名 |
+| cname | string | CNAME记录 |
+| type | string | 类型 |
+| auth | object | 防盗链配置 |
+| &nbsp;&nbsp;&nbsp;&nbsp;type | string | 防盗链类型 |
+| &nbsp;&nbsp;&nbsp;&nbsp;enable | boolean | 是否启用防盗链 |
+| &nbsp;&nbsp;&nbsp;&nbsp;primaryKey | string | 主密钥 |
+| &nbsp;&nbsp;&nbsp;&nbsp;secondaryKey | string | 从密钥 |
+| &nbsp;&nbsp;&nbsp;&nbsp;expireSeconds | integer | 过期时间（秒） |
+| bframeConfig | object | B帧配置 |
+| certificateID | string | 证书ID |
+| creationDate | string | 创建时间 |
+| lastModified | string | 最后修改时间 |
+| urlRewrites | null | URL重写规则 |
+| httpsEnable | boolean | 是否启用HTTPS |
+| ipLimit | object | IP限制配置 |
+| &nbsp;&nbsp;&nbsp;&nbsp;whitelist | null | 白名单 |
+| &nbsp;&nbsp;&nbsp;&nbsp;blacklist | null | 黑名单 |
+| refererSecurity | object | Referer安全配置 |
+| &nbsp;&nbsp;&nbsp;&nbsp;type | string | Referer类型 |
+| &nbsp;&nbsp;&nbsp;&nbsp;list | null | Referer列表 |
+| &nbsp;&nbsp;&nbsp;&nbsp;includeEmpty | boolean | 是否包含空Referer |
