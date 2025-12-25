@@ -95,7 +95,7 @@ def base64_url_safe_encode(data):
 
 if __name__ == "__main__":
     # 测试修改空间配置，替换 "test-bucket-name" 为你想要修改的空间名称
-    bucket_name = "test-bucket-name"
+    bucket_name = "sdk-live"
     print(f"Testing update bucket config API with bucket name: {bucket_name}")
     
     # 示例配置数据（请根据实际需求修改）
@@ -103,13 +103,13 @@ if __name__ == "__main__":
         "status": "Enabled",
         "recording": {
             "enable": True,
-            "objectBucket": "test",
-            "expireDays": 10,
+            "objectBucket": "web-rtn-test",
+            "expireDays": 0,
             "segmentDuration": 5,
             "snapshot": {
                 "enable": True,
-                "interval": 5,
-                "filename": "test",
+                "interval": 60,
+                "filename": "yydounai66_{{.Bucket}}_{{.StreamID}}_{{.Title}}_{{.TimeSecond10}}",
                 "format": "",
                 "expireDays": 3
             }
