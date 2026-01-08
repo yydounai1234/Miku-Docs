@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 import os
 import hmac
 import hashlib
 import base64
-from urllib.parse import urlencode, urlparse
+import json
+from urllib.parse import urlparse
 from http.client import HTTPSConnection, HTTPConnection
 
 # 你的 AK 和 SK
@@ -10,41 +12,26 @@ AK = os.getenv("Access_key")
 SK = os.getenv("Secret_key")
 
 
-def test_get_pub_list(marker=None, limit=None, name=None):
+def test_add_transcoding_template(bucket_name, template_body):
     """
-    测试获取 pub 转推任务列表接口
+    新增实时流转码模板。
 
     Args:
-        marker (str | None): 翻页游标
-        limit (int | None): 返回数量上限，最大 1000
-        name (str | None): 任务名称/描述模糊匹配
+        bucket_name (str): 空间名称，用于拼接 host（示例使用 cn-east-1 区域）
+        template_body (dict): 模板内容，字段参考“新增实时流转码模板”文档
     """
 
-    # 接口信息
-    method = "GET"
-    host = "pub-manager.mikudns.com"
-    path = "/tasks"
-
-    query_params = {}
-    if marker is not None:
-        query_params["marker"] = marker
-    if limit is not None:
-        query_params["limit"] = str(limit)
-    if name is not None:
-        query_params["name"] = name
-
-    query_string = urlencode(query_params)
-    url = f"https://{host}{path}" + (f"?{query_string}" if query_string else "")
+    method = "POST"
+    host = f"{bucket_name}.mls.cn-east-1.qiniumiku.com"
+    path = "/?template=transcode"
+    url = f"http://{host}{path}"
     print(f"Sending request to: {url}")
 
-    # 无请求体
-    body = "{}"
+    body = json.dumps(template_body)
 
-    # 生成签名
     signature = generate_signature(method, url, body, AK, SK)
     print(f"生成的签名: {signature}")
 
-    # 发送HTTP请求
     response = send_http_request(url, method, body, signature, 30)
     return response
 
@@ -52,7 +39,6 @@ def test_get_pub_list(marker=None, limit=None, name=None):
 def generate_signature(method, url, body, ak, sk):
     parsed_url = urlparse(url)
 
-    # 构建签名数据
     data = method + " " + parsed_url.path
 
     if parsed_url.query:
@@ -64,7 +50,7 @@ def generate_signature(method, url, body, ak, sk):
     if body:
         data += "\n\n" + body
     print(data)
-    # 使用HMAC-SHA1进行签名
+
     hmac_sha1 = hmac.new(sk.encode("utf-8"), data.encode("utf-8"), hashlib.sha1)
     hmac_result = hmac_sha1.digest()
 
@@ -75,7 +61,6 @@ def generate_signature(method, url, body, ak, sk):
 def send_http_request(url, method, data, signature, timeout):
     parsed_url = urlparse(url)
 
-    # 检查主机名是否存在
     if not parsed_url.hostname:
         raise ValueError("Invalid URL: missing hostname")
 
@@ -92,7 +77,7 @@ def send_http_request(url, method, data, signature, timeout):
     conn.request(
         method,
         parsed_url.path + ("?" + parsed_url.query if parsed_url.query else ""),
-        body=data if data else None,
+        body=data if data else "{}",
         headers=headers,
     )
 
@@ -111,6 +96,23 @@ def base64_url_safe_encode(data):
 
 
 if __name__ == "__main__":
-    print("Testing get pub task list API...")
-    response = test_get_pub_list(marker=None, limit=100, name=None)
+    bucket_name = "sdk-miku-test"
+
+    # 示例请求体，可按需调整字段
+    template_body = {
+        "name": "720p-template",
+        "description": "720p转码模板",
+        "video": {
+            "codec": "h264",
+            "width": 1280,
+            "height": 720,
+            "bitrate": 1500000,
+            "framerate": 30,
+        },
+        "audio": {"codec": "aac", "bitrate": 128000, "samplerate": 44100},
+        "format": "hls",
+    }
+
+    print("--- 新增实时流转码模板 ---")
+    response = test_add_transcoding_template(bucket_name, template_body)
     print(f"响应内容: {response}")

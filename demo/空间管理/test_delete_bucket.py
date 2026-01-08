@@ -8,8 +8,8 @@ from urllib.parse import urlparse
 from http.client import HTTPSConnection, HTTPConnection
 
 # 你的 AK 和 SK
-AK = "QxZugR8TAhI38AiJ_cptTl3RbzLyca3t-AAiH-Hh"
-SK = "4yv8mE9kFeoE31PVlIjWvi3nfTytwT0JiAxWjCDa"
+AK = os.getenv("Access_key")
+SK = os.getenv("Secret_key")
 
 def test_delete_bucket(bucket_name):
     """
