@@ -1,36 +1,38 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os
 import hmac
 import hashlib
 import base64
 import json
-from urllib.parse import quote, urlparse
+from urllib.parse import urlparse
 from http.client import HTTPSConnection, HTTPConnection
 
-# 你的 AK 和 SK
+# 你的 AK 和 SK（从环境变量读取）
 AK = os.getenv("Access_key")
 SK = os.getenv("Secret_key")
 
 
-def test_update_transcoding_template(bucket_name, template_id, template_body):
+def test_update_transcoding_template(template_body, host=None):
     """
-    更新指定 ID 的实时流转码模板。
+    更新实时流转码模板。
 
     Args:
-        bucket_name (str): 空间名称，用于拼接 host（示例使用 cn-east-1 区域）
-        template_id (str): 模板 ID
-        template_body (dict): 更新的模板内容
+        host (str): 服务域名，默认 mls.cn-east-1.qiniumiku.com
+        template_body (dict): 模板内容，字段参考“更新实时流转码模板”文档
     """
 
-    method = "PUT"
-    host = f"{bucket_name}.mls.cn-east-1.qiniumiku.com"
-    path = f"/?template=transcode&id={quote(template_id)}"
-    url = f"http://{host}{path}"
-    print(f"Sending request to: {url}")
+    method = "PATCH"
+    service_host = host or "mls.cn-east-1.qiniumiku.com"
+    path = "/?codecTemplate"
+    url = "http://{}{}".format(service_host, path)
+    print("Sending request to: {}".format(url))
 
     body = json.dumps(template_body)
 
     signature = generate_signature(method, url, body, AK, SK)
-    print(f"生成的签名: {signature}")
+    print("生成的签名: {}".format(signature))
 
     response = send_http_request(url, method, body, signature, 30)
     return response
@@ -86,7 +88,7 @@ def send_http_request(url, method, data, signature, timeout):
 
     conn.close()
 
-    return f"HTTP {response.status}: {response_body}"
+    return "HTTP {}: {}".format(response.status, response_body)
 
 
 def base64_url_safe_encode(data):
@@ -96,24 +98,20 @@ def base64_url_safe_encode(data):
 
 
 if __name__ == "__main__":
-    bucket_name = "test-bucket-name"
-    template_id = "tpl-123456"
-
-    # 示例更新体，可按需调整字段
+    # 示例请求体，可按需调整字段
     template_body = {
-        "name": "720p-template-updated",
-        "description": "更新后的720p转码模板",
-        "video": {
-            "codec": "h264",
-            "width": 1280,
-            "height": 720,
-            "bitrate": 2000000,
-            "framerate": 30,
+        "name": "my480p1",
+        "desc": "480pPPP实现",
+        "smart": False,
+        "profile": {
+            "videoWidth": 640,
+            "videoHigh": 480,
+            "ab": 128,
+            "ar": 44100,
+            "vcodec": "libx264",
         },
-        "audio": {"codec": "aac", "bitrate": 128000, "samplerate": 44100},
-        "format": "hls",
     }
 
     print("--- 更新实时流转码模板 ---")
-    response = test_update_transcoding_template(bucket_name, template_id, template_body)
-    print(f"响应内容: {response}")
+    response = test_update_transcoding_template(template_body)
+    print("响应内容: {}".format(response))
