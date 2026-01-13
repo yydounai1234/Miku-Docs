@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import os
 import hmac
 import hashlib
@@ -9,30 +6,30 @@ import json
 from urllib.parse import urlparse
 from http.client import HTTPSConnection, HTTPConnection
 
-# 你的 AK 和 SK（从环境变量读取）
+# 你的 AK 和 SK
 AK = os.getenv("Access_key")
 SK = os.getenv("Secret_key")
 
 
-def test_add_transcoding_template(template_body, host=None):
+def test_stop_merge_stream(bucket_name, merge_id):
     """
-    新增实时流转码模板。
+    测试停止合流接口
 
     Args:
-        host (str): 服务域名，默认 mls.cn-east-1.qiniumiku.com
-        template_body (dict): 模板内容，字段参考“新增实时流转码模板”文档
+        bucket_name (str): 空间名称，会拼入 host `<bucket>.mls.cn-east-1.qiniumiku.com`
+        merge_id (str): 合流 id，对应创建合流时的 id
     """
 
     method = "POST"
-    service_host = host or "mls.cn-east-1.qiniumiku.com"
-    path = "/?codecTemplate"
-    url = "http://{}{}".format(service_host, path)
-    print("Sending request to: {}".format(url))
+    host = f"{bucket_name}.mls.cn-east-1.qiniumiku.com"
+    path = "/?deletemerge"
+    url = f"http://{host}{path}"
+    print(f"Sending request to: {url}")
 
-    body = json.dumps(template_body)
+    body = json.dumps({"id": merge_id})
 
     signature = generate_signature(method, url, body, AK, SK)
-    print("生成的签名: {}".format(signature))
+    print(f"生成的签名: {signature}")
 
     response = send_http_request(url, method, body, signature, 30)
     return response
@@ -52,7 +49,6 @@ def generate_signature(method, url, body, ak, sk):
     if body:
         data += "\n\n" + body
     print(data)
-
     hmac_sha1 = hmac.new(sk.encode("utf-8"), data.encode("utf-8"), hashlib.sha1)
     hmac_result = hmac_sha1.digest()
 
@@ -88,7 +84,7 @@ def send_http_request(url, method, data, signature, timeout):
 
     conn.close()
 
-    return "HTTP {}: {}".format(response.status, response_body)
+    return f"HTTP {response.status}: {response_body}"
 
 
 def base64_url_safe_encode(data):
@@ -98,23 +94,11 @@ def base64_url_safe_encode(data):
 
 
 if __name__ == "__main__":
-    # 示例请求体，可按需调整字段
-    template_body = {
-        "name": "my480p1",
-        "desc": "480p实现",
-        "smart": False,
-        "profile": {
-            "videoWidth": 640,
-            "videoHigh": 480,
-            "ab": 128,
-            "ar": 44100,
-            "vcodec": "libx264",
-        },
-    }
-
-    print("--- 新增实时流转码模板 ---")
-    response = test_add_transcoding_template(template_body)
-    print("响应内容: {}".format(response))
+    bucket_name = "sdk-miku-test"
+    merge_id = "merge-demo-001"
+    print(f"Testing stop merge API with bucket: {bucket_name}, id: {merge_id}")
+    response = test_stop_merge_stream(bucket_name, merge_id)
+    print(f"响应内容: {response}")
 
 
 

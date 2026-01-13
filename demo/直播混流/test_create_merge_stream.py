@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import os
 import hmac
 import hashlib
@@ -9,31 +6,34 @@ import json
 from urllib.parse import urlparse
 from http.client import HTTPSConnection, HTTPConnection
 
-# 你的 AK 和 SK（从环境变量读取）
+# 你的 AK 和 SK
 AK = os.getenv("Access_key")
 SK = os.getenv("Secret_key")
 
 
-def test_add_transcoding_template(template_body, host=None):
+def test_create_stream(bucket_name, merge_body):
     """
-    新增实时流转码模板。
+    测试创建合流接口
 
     Args:
-        host (str): 服务域名，默认 mls.cn-east-1.qiniumiku.com
-        template_body (dict): 模板内容，字段参考“新增实时流转码模板”文档
+        bucket_name (str): 空间名称，会拼入 host `<bucket>.mls.cn-east-1.qiniumiku.com`
+        merge_body (dict): 合流请求体，需包含 id/duration/inputs/config/outputs 等字段
     """
 
+    # 接口信息
     method = "POST"
-    service_host = host or "mls.cn-east-1.qiniumiku.com"
-    path = "/?codecTemplate"
-    url = "http://{}{}".format(service_host, path)
-    print("Sending request to: {}".format(url))
+    host = f"{bucket_name}.mls.cn-east-1.qiniumiku.com"
+    path = "/?createmerge"
+    url = f"http://{host}{path}"
+    print(f"Sending request to: {url}")
 
-    body = json.dumps(template_body)
+    body = json.dumps(merge_body)
 
+    # 生成签名
     signature = generate_signature(method, url, body, AK, SK)
-    print("生成的签名: {}".format(signature))
+    print(f"生成的签名: {signature}")
 
+    # 发送HTTP请求
     response = send_http_request(url, method, body, signature, 30)
     return response
 
@@ -41,6 +41,7 @@ def test_add_transcoding_template(template_body, host=None):
 def generate_signature(method, url, body, ak, sk):
     parsed_url = urlparse(url)
 
+    # 构建签名数据
     data = method + " " + parsed_url.path
 
     if parsed_url.query:
@@ -52,7 +53,7 @@ def generate_signature(method, url, body, ak, sk):
     if body:
         data += "\n\n" + body
     print(data)
-
+    # 使用HMAC-SHA1进行签名
     hmac_sha1 = hmac.new(sk.encode("utf-8"), data.encode("utf-8"), hashlib.sha1)
     hmac_result = hmac_sha1.digest()
 
@@ -63,6 +64,7 @@ def generate_signature(method, url, body, ak, sk):
 def send_http_request(url, method, data, signature, timeout):
     parsed_url = urlparse(url)
 
+    # 检查主机名是否存在
     if not parsed_url.hostname:
         raise ValueError("Invalid URL: missing hostname")
 
@@ -88,7 +90,7 @@ def send_http_request(url, method, data, signature, timeout):
 
     conn.close()
 
-    return "HTTP {}: {}".format(response.status, response_body)
+    return f"HTTP {response.status}: {response_body}"
 
 
 def base64_url_safe_encode(data):
@@ -98,23 +100,37 @@ def base64_url_safe_encode(data):
 
 
 if __name__ == "__main__":
-    # 示例请求体，可按需调整字段
-    template_body = {
-        "name": "my480p1",
-        "desc": "480p实现",
-        "smart": False,
-        "profile": {
-            "videoWidth": 640,
-            "videoHigh": 480,
-            "ab": 128,
-            "ar": 44100,
-            "vcodec": "libx264",
+    # 构造示例请求体，按需替换 source/url/id 等参数
+    merge_body = {
+        "id": "merge-demo-001",
+        "duration": 100000,
+        "inputs": [
+            {
+                "chnl": 0,
+                "source": "rtmp://pili-live-rtmp.xrtest.cloudvdn.com/xrtest/input1",
+                "chromakey": "0x004D00:0.1:0.0",
+            },
+            {
+                "chnl": 1,
+                "source": "rtmp://pili-live-rtmp.xrtest.cloudvdn.com/xrtest/input2",
+            },
+        ],
+        "config": {
+            "layout": "203",
+            "width": 1280,
+            "height": 720,
+            "fps": 25,
+            "kbps": 2000,
         },
+        "outputs": [
+            {
+                "type": "rtmp",
+                "url": "rtmp://pili-publish.qnsdk.com/sdk-live/testmediamerge123",
+            }
+        ],
     }
 
-    print("--- 新增实时流转码模板 ---")
-    response = test_add_transcoding_template(template_body)
-    print("响应内容: {}".format(response))
-
-
-
+    bucket_name = "sdk-miku-test"
+    print(f"Testing create merge API with bucket: {bucket_name}")
+    response = test_create_stream(bucket_name, merge_body)
+    print(f"响应内容: {response}")

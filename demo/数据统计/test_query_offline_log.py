@@ -1,38 +1,43 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import os
 import hmac
 import hashlib
 import base64
-import json
-from urllib.parse import urlparse
+from urllib.parse import urlencode, urlparse
 from http.client import HTTPSConnection, HTTPConnection
 
-# 你的 AK 和 SK（从环境变量读取）
+# 你的 AK 和 SK
 AK = os.getenv("Access_key")
 SK = os.getenv("Secret_key")
 
 
-def test_add_transcoding_template(template_body, host=None):
+def test_query_offline_log(domain, start, end):
     """
-    新增实时流转码模板。
+    查询离线日志。
 
     Args:
-        host (str): 服务域名，默认 mls.cn-east-1.qiniumiku.com
-        template_body (dict): 模板内容，字段参考“新增实时流转码模板”文档
+        domain (str): 需要查询的域名
+        start (int): 查询起始时间 Unix 秒级
+        end (int): 查询结束时间 Unix 秒级
     """
 
-    method = "POST"
-    service_host = host or "mls.cn-east-1.qiniumiku.com"
-    path = "/?codecTemplate"
-    url = "http://{}{}".format(service_host, path)
-    print("Sending request to: {}".format(url))
+    method = "GET"
+    host = "miku-statd.qiniuapi.com"
+    path = "/statd/v1/livelog"
 
-    body = json.dumps(template_body)
+    query_params = {
+        "domain": domain,
+        "start": str(start),
+        "end": str(end),
+    }
+
+    query_string = urlencode(query_params)
+    url = f"https://{host}{path}?{query_string}"
+    print(f"Sending request to: {url}")
+
+    body = "{}"
 
     signature = generate_signature(method, url, body, AK, SK)
-    print("生成的签名: {}".format(signature))
+    print(f"生成的签名: {signature}")
 
     response = send_http_request(url, method, body, signature, 30)
     return response
@@ -88,7 +93,7 @@ def send_http_request(url, method, data, signature, timeout):
 
     conn.close()
 
-    return "HTTP {}: {}".format(response.status, response_body)
+    return f"HTTP {response.status}: {response_body}"
 
 
 def base64_url_safe_encode(data):
@@ -98,23 +103,10 @@ def base64_url_safe_encode(data):
 
 
 if __name__ == "__main__":
-    # 示例请求体，可按需调整字段
-    template_body = {
-        "name": "my480p1",
-        "desc": "480p实现",
-        "smart": False,
-        "profile": {
-            "videoWidth": 640,
-            "videoHigh": 480,
-            "ab": 128,
-            "ar": 44100,
-            "vcodec": "libx264",
-        },
-    }
+    domain_name = "miku-test-publish.qnsdk.com"
+    start_time = 1768186800
+    end_time = 1768190790
 
-    print("--- 新增实时流转码模板 ---")
-    response = test_add_transcoding_template(template_body)
-    print("响应内容: {}".format(response))
-
-
-
+    print(f"Testing offline log query for domain: {domain_name}")
+    response = test_query_offline_log(domain_name, start_time, end_time)
+    print(f"响应内容: {response}")
