@@ -2,7 +2,6 @@ import os
 import hmac
 import hashlib
 import base64
-import json
 from urllib.parse import urlencode, urlparse
 from http.client import HTTPSConnection, HTTPConnection
 
@@ -11,22 +10,23 @@ AK = os.getenv("Access_key")
 SK = os.getenv("Secret_key")
 
 
-def test_create_apikey(name):
+def test_query_apikey_list():
     """
-    创建 apikey。
-
-    Args:
-        name (str): apikey 名称，长度 1-20
+    查询 apikey 列表。
     """
 
-    method = "POST"
+    method = "GET"
     host = "mls.cn-east-1.qiniumiku.com"
     path = "/"
 
-    url = f"http://{host}{path}?apikey"
+    query_params = {
+        "apikeys": "",
+    }
+    query_string = urlencode(query_params)
+    url = f"http://{host}{path}?{query_string}"
     print(f"Sending request to: {url}")
 
-    body = json.dumps({"name": name})
+    body = "{}"
 
     signature = generate_signature(method, url, body, AK, SK)
     print(f"生成的签名: {signature}")
@@ -95,9 +95,6 @@ def base64_url_safe_encode(data):
 
 
 if __name__ == "__main__":
-    apikey_name = "demo-apikey"
-
-    print(f"Testing create apikey API with name: {apikey_name}")
-    response = test_create_apikey(apikey_name)
+    print("Testing apikey list API...")
+    response = test_query_apikey_list()
     print(f"响应内容: {response}")
-

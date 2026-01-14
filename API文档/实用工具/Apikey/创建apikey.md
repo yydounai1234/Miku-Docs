@@ -1,76 +1,66 @@
-# 创建 apikey
-
-## 接口名称
+# 描述
 创建 apikey
 
-## 接口描述
-创建一个新的Apikey用于身份验证和授权
+# 接口信息
+- **请求方法**: `POST`
+- **请求地址**: mls.cn-east-1.qiniumiku.com
+- **请求路径**: /
 
-## 请求方法
-POST
+# 请求参数
+## Query 参数
+| 参数名称 | 类型 | 必填 | 示例值 | 描述 |
+|:---|:---:|:---:|:---|:---|
+| apikey | string | 必须 | - | 固定字段 |
 
-## 请求路径
+## Header 参数
+| 参数名称 | 类型 | 必填 | 示例值 | 描述 |
+|:---|:---:|:---:|:---|:---|
+| Host | string | 是 | mls.cn-east-1.qiniumiku.com | 请求的服务域名 |
+| Authorization | string | 是 | `<QiniuToken>` | 管理凭证 QiniuToken，[生成规则](/mikustream/api/12893/mikustream-live-http-requests-authentication) |
+
+
+## Body 参数 (application/json)
+示例：
+```json
+{
+  "name": "string"
+}
 ```
-POST /?apikey
-```
+## 参数
+| 参数名称 | 类型 | 是否必需 | 说明 |
+|:---|:---:|:---:|:---|
+| name | string | 必须 | 长度 1-20 之间 内容不做校验 |
 
-## 请求Body
-| 参数名称 | 类型 | 是否必填 | 说明 |
-|---------|------|---------|------|
-| name | string | 是 | Apikey名称 |
-| description | string | 否 | Apikey描述 |
 
-## 请求示例
+# 请求示例
 ```http
-POST /?apikey HTTP/1.1
-Host: <service-code>.<region-code>.qiniumiku.com
+GET /?apikey HTTP/1.1
+Host: mls.cn-east-1.qiniumiku.com
 Authorization: <QiniuToken>
 Content-Type: application/json
 
 {
-  "name": "my-apikey-001",
-  "description": "用于自动化脚本的Apikey"
+    "name": "test"
 }
 ```
 
-## 响应参数
-| 参数名称 | 类型 | 说明 |
-|---------|------|------|
-| requestId | string | 请求ID |
-| code | integer | 响应码 |
-| message | string | 响应消息 |
-| data | object | Apikey信息 |
-| data.apikey | string | Apikey值 |
-| data.name | string | Apikey名称 |
-| data.description | string | Apikey描述 |
-| data.createTime | string | 创建时间 |
+# 返回响应
+## 响应状态码
+- **请查阅**: [这里](/mikustream/api/12894/mikustream-live-error-code)
 
 ## 响应示例
 ```json
 {
-  "requestId": "558f0655-f373-48e6-93fb-7c91020462e0",
-  "code": 200,
-  "message": "success",
-  "data": {
-    "apikey": "ak-1234567890abcdef",
-    "name": "my-apikey-001",
-    "description": "用于自动化脚本的Apikey",
-    "createTime": "2023-01-01T00:00:00Z"
-  }
+    "id": "fed056ac-bafd-4927-b6a1-22d74ff779e7",
+    "name": "滑敏",
+    "key": "mk-659fcc74e251a87e7227a11b2e6d653757fc04715314b4f8ce3e384a956c69af",
+    "createdAt": "2025-06-28 17:05:53"
 }
 ```
-
-## 注意事项
-- Apikey一旦创建，仅在响应中返回一次，请妥善保存
-- Apikey具有与创建者相同的权限
-- 建议为不同的应用场景创建不同的Apikey
-
-## 错误码
-| 错误码 | 说明 |
-|-------|------|
-| 400 | 请求参数错误 |
-| 401 | 鉴权失败 |
-| 500 | 服务端内部错误 |
-
-## 鉴权方式
-支持 QiniuToken、IAM 鉴权和 Apikey 鉴权，请参考[请求鉴权](../公共API规范/请求鉴权.md)文档。
+## 响应参数
+| 参数名称 | 类型 | 说明 | 是否必需 |
+|:---------|:------|:------|:----------|
+| id | string | id | 必需 |
+| name | string | 名字 | 必需 |
+| key | string | apikey | 必需 |
+| createdAt | string | 创建时间 | 必需 |

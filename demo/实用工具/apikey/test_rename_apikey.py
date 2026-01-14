@@ -11,22 +11,27 @@ AK = os.getenv("Access_key")
 SK = os.getenv("Secret_key")
 
 
-def test_create_apikey(name):
+def test_rename_apikey(apikey_id, new_name):
     """
-    创建 apikey。
+    重命名 apikey。
 
     Args:
-        name (str): apikey 名称，长度 1-20
+        apikey_id (str): apikey 的 id
+        new_name (str): 新的 apikey 名称
     """
 
     method = "POST"
     host = "mls.cn-east-1.qiniumiku.com"
     path = "/"
 
-    url = f"http://{host}{path}?apikey"
+    query_params = {
+        "apikeyRename": "",
+    }
+    query_string = urlencode(query_params)
+    url = f"http://{host}{path}?{query_string}"
     print(f"Sending request to: {url}")
 
-    body = json.dumps({"name": name})
+    body = json.dumps({"id": apikey_id, "name": new_name})
 
     signature = generate_signature(method, url, body, AK, SK)
     print(f"生成的签名: {signature}")
@@ -95,9 +100,9 @@ def base64_url_safe_encode(data):
 
 
 if __name__ == "__main__":
-    apikey_name = "demo-apikey"
+    apikey_id = "f756f547-7d1d-46c1-b026-df925c3244c0"
+    new_name = "miku-test"
 
-    print(f"Testing create apikey API with name: {apikey_name}")
-    response = test_create_apikey(apikey_name)
+    print(f"Testing rename apikey API with id: {apikey_id}")
+    response = test_rename_apikey(apikey_id, new_name)
     print(f"响应内容: {response}")
-

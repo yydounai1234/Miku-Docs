@@ -1,70 +1,57 @@
-# 重命名 apikey
-
-## 接口名称
+# 描述
 重命名 apikey
 
-## 接口描述
-修改指定Apikey的名称和描述
+# 接口信息
+- **请求方法**: `POST`
+- **请求地址**: mls.cn-east-1.qiniumiku.com
+- **请求路径**: /
 
-## 请求方法
-PUT
+# 请求参数
+## Query 参数
+| 参数名称 | 类型 | 必填 | 示例值 | 描述 |
+|:---|:---:|:---:|:---|:---|
+| apikeyRename | string | 必须 | - | 固定字段 |
 
-## 请求路径
+## Header 参数
+| 参数名称 | 类型 | 必填 | 示例值 | 描述 |
+|:---|:---:|:---:|:---|:---|
+| Host | string | 是 | mls.cn-east-1.qiniumiku.com | 请求的服务域名 |
+| Authorization | string | 是 | `<QiniuToken>` | 管理凭证 QiniuToken，[生成规则](/mikustream/api/12893/mikustream-live-http-requests-authentication) |
+
+
+## Body 参数 (application/json)
+示例：
+```json
+{
+    "id": "string",
+    "name": "string"
+}
 ```
-PUT /?apikey=<apikey>
-```
+## 参数
+| 参数名称 | 类型 | 是否必需 | 说明 |
+|:---|:---:|:---:|:---|
+| id | string | 必须 | apikey id |
+| name | string | 必须 | 重命名的 apikey 名 |
 
-## 请求参数
-| 参数名称 | 类型 | 是否必填 | 说明 |
-|---------|------|---------|------|
-| apikey | string | 是 | 要修改的Apikey值 |
 
-## 请求Body
-| 参数名称 | 类型 | 是否必填 | 说明 |
-|---------|------|---------|------|
-| name | string | 否 | 新的Apikey名称 |
-| description | string | 否 | 新的Apikey描述 |
-
-## 请求示例
+# 请求示例
 ```http
-PUT /?apikey=ak-1234567890abcdef HTTP/1.1
-Host: <service-code>.<region-code>.qiniumiku.com
+POST /?apikeyRename HTTP/1.1
+Host: mls.cn-east-1.qiniumiku.com
 Authorization: <QiniuToken>
 Content-Type: application/json
 
 {
-  "name": "updated-apikey-name",
-  "description": "更新后的Apikey描述"
+  "id": "f756f547-7d1d-46d1-b042-df925c3255c0",
+  "name": "miku-test"
 }
 ```
 
-## 响应参数
-| 参数名称 | 类型 | 说明 |
-|---------|------|------|
-| requestId | string | 请求ID |
-| code | integer | 响应码 |
-| message | string | 响应消息 |
+# 返回响应
+## 响应状态码
+- **请查阅**: [这里](/mikustream/api/12894/mikustream-live-error-code)
 
 ## 响应示例
 ```json
-{
-  "requestId": "558f0655-f373-48e6-93fb-7c91020462e0",
-  "code": 200,
-  "message": "success"
-}
+{}
 ```
-
-## 注意事项
-- 可以只修改名称或只修改描述
-- Apikey值无法修改，如需更换请删除后重新创建
-
-## 错误码
-| 错误码 | 说明 |
-|-------|------|
-| 400 | 请求参数错误 |
-| 401 | 鉴权失败 |
-| 404 | Apikey不存在 |
-| 500 | 服务端内部错误 |
-
-## 鉴权方式
-支持 QiniuToken、IAM 鉴权和 Apikey 鉴权，请参考[请求鉴权](../公共API规范/请求鉴权.md)文档。

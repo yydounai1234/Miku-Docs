@@ -11,22 +11,26 @@ AK = os.getenv("Access_key")
 SK = os.getenv("Secret_key")
 
 
-def test_create_apikey(name):
+def test_delete_apikey(apikey_id):
     """
-    创建 apikey。
+    删除 apikey。
 
     Args:
-        name (str): apikey 名称，长度 1-20
+        apikey_id (str): apikey 的 id
     """
 
-    method = "POST"
+    method = "DELETE"
     host = "mls.cn-east-1.qiniumiku.com"
     path = "/"
 
-    url = f"http://{host}{path}?apikey"
+    query_params = {
+        "apikey": "",
+    }
+    query_string = urlencode(query_params)
+    url = f"http://{host}{path}?{query_string}"
     print(f"Sending request to: {url}")
 
-    body = json.dumps({"name": name})
+    body = json.dumps({"id": apikey_id})
 
     signature = generate_signature(method, url, body, AK, SK)
     print(f"生成的签名: {signature}")
@@ -95,9 +99,8 @@ def base64_url_safe_encode(data):
 
 
 if __name__ == "__main__":
-    apikey_name = "demo-apikey"
+    apikey_id = "8225e0a6-6e41-42ae-b091-5375a14d5870"
 
-    print(f"Testing create apikey API with name: {apikey_name}")
-    response = test_create_apikey(apikey_name)
+    print(f"Testing delete apikey API with id: {apikey_id}")
+    response = test_delete_apikey(apikey_id)
     print(f"响应内容: {response}")
-

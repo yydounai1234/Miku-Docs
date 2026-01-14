@@ -1,75 +1,58 @@
-# apikey 列表
-
-## 接口名称
+# 描述
 apikey 列表
 
-## 接口描述
-获取当前账户下所有的Apikey列表
+# 接口信息
+- **请求方法**: `GET`
+- **请求地址**: mls.cn-east-1.qiniumiku.com
+- **请求路径**: /
 
-## 请求方法
-GET
+# 请求参数
+## Query 参数
+| 参数名称 | 类型 | 必填 | 示例值 | 描述 |
+|:---|:---:|:---:|:---|:---|
+| apikeys | string | 必须 | - | 固定字段 |
 
-## 请求路径
-```
-GET /?apikey
-```
+## Header 参数
+| 参数名称 | 类型 | 必填 | 示例值 | 描述 |
+|:---|:---:|:---:|:---|:---|
+| Host | string | 是 | mls.cn-east-1.qiniumiku.com | 请求的服务域名 |
+| Authorization | string | 是 | `<QiniuToken>` | 管理凭证 QiniuToken，[生成规则](/mikustream/api/12893/mikustream-live-http-requests-authentication) |
 
-## 请求示例
+
+
+# 请求示例
 ```http
-GET /?apikey HTTP/1.1
-Host: <service-code>.<region-code>.qiniumiku.com
+GET /?apikeys HTTP/1.1
+Host: mls.cn-east-1.qiniumiku.com
 Authorization: <QiniuToken>
 Content-Type: application/json
+
 ```
 
-## 响应参数
-| 参数名称 | 类型 | 说明 |
-|---------|------|------|
-| requestId | string | 请求ID |
-| code | integer | 响应码 |
-| message | string | 响应消息 |
-| data | array | Apikey列表 |
-| data[].apikey | string | Apikey值（部分隐藏） |
-| data[].name | string | Apikey名称 |
-| data[].description | string | Apikey描述 |
-| data[].createTime | string | 创建时间 |
-| data[].lastUsedTime | string | 最后使用时间 |
+# 返回响应
+## 响应状态码
+- **请查阅**: [这里](/mikustream/api/12894/mikustream-live-error-code)
 
 ## 响应示例
 ```json
-{
-  "requestId": "558f0655-f373-48e6-93fb-7c91020462e0",
-  "code": 200,
-  "message": "success",
-  "data": [
-    {
-      "apikey": "ak-123456******cdef",
-      "name": "my-apikey-001",
-      "description": "用于自动化脚本的Apikey",
-      "createTime": "2023-01-01T00:00:00Z",
-      "lastUsedTime": "2023-01-01T10:00:00Z"
-    },
-    {
-      "apikey": "ak-789012******ghij",
-      "name": "my-apikey-002",
-      "description": "用于第三方集成的Apikey",
-      "createTime": "2023-01-02T00:00:00Z",
-      "lastUsedTime": "2023-01-02T09:00:00Z"
-    }
-  ]
-}
+[
+  {
+      "id": "fed056ac-bafd-4927-b6a1-22d74ff779e7",
+      "name": "虢强",
+      "key": "mk-sads****************************************sadc",
+      "createdAt": "2025-04-08 14:38:06"
+  },
+  {
+      "id": "fed056ac-bafd-4927-b6a1-22d74ff77923x",
+      "name": "肥勇",
+      "key": "mk-aads***********************************dasc",
+      "createdAt": "2024-12-10 09:13:16"
+  },
+  {
+      "id": "fed056ac-bafd-4927-b6a1-22d74ff77921r",
+      "name": "屠国强",
+      "key": "mk-sscd*************************************das",
+      "createdAt": "2024-10-01 21:24:19"
+  }
+]
 ```
-
-## 注意事项
-- 返回的Apikey值是部分隐藏的，无法获取完整值
-- 如需获取完整Apikey值，需要重新创建
-
-## 错误码
-| 错误码 | 说明 |
-|-------|------|
-| 400 | 请求参数错误 |
-| 401 | 鉴权失败 |
-| 500 | 服务端内部错误 |
-
-## 鉴权方式
-支持 QiniuToken、IAM 鉴权和 Apikey 鉴权，请参考[请求鉴权](../公共API规范/请求鉴权.md)文档。
