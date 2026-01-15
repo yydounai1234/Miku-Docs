@@ -107,12 +107,11 @@ if __name__ == "__main__":
         "inputs": [
             {
                 "chnl": 0,
-                "source": "rtmp://pili-live-rtmp.xrtest.cloudvdn.com/xrtest/input1",
-                "chromakey": "0x004D00:0.1:0.0",
+                "source": "rtmp://miku-test-play.qnsdk.com/sdk-miku-test/test-yydounai27"
             },
             {
                 "chnl": 1,
-                "source": "rtmp://pili-live-rtmp.xrtest.cloudvdn.com/xrtest/input2",
+                "source": "rtmp://miku-test-play.qnsdk.com/sdk-miku-test/test-yydounai28",
             },
         ],
         "config": {
@@ -125,7 +124,7 @@ if __name__ == "__main__":
         "outputs": [
             {
                 "type": "rtmp",
-                "url": "rtmp://pili-publish.qnsdk.com/sdk-live/testmediamerge123",
+                "url": "rtmp://miku-test-publish.qnsdk.com/sdk-miku-test/test-yydounai29",
             }
         ],
     }
