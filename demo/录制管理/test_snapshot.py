@@ -2,6 +2,7 @@ import os
 import hmac
 import hashlib
 import base64
+import json
 from urllib.parse import urlencode, urlparse
 from http.client import HTTPSConnection, HTTPConnection
 
@@ -10,59 +11,56 @@ AK = os.getenv("Access_key")
 SK = os.getenv("Secret_key")
 
 
-def test_query_upflow_stat(
-    begin,
-    end=None,
-    granularity="5min",
-    group=None,
-    hub=None,
-    domain=None,
-    stream_name=None,
-    area=None,
-    select="flow",
+def test_snapshot(
+    bucket_name,
+    stream_name,
+    time=None,
+    fname=None,
+    img_format=None,
+    pipeline=None,
+    notify=None,
+    delete_after_days=None,
 ):
     """
-    查询直播上行流量。
+    保存直播截图。
 
     Args:
-        begin (str): 开始时间，格式 20060102 或 20060102150405
-        end (str | None): 结束时间，超过当前时间则取当前时间
-        granularity (str): 时间粒度，5min/hour/day/month
-        group (str | None): 分组字段，可取 hub/domain/streamName/area 等条件字段
-        hub (str | None): 直播空间名
-        domain (str | None): 域名
-        stream_name (str | None): 流名
-        area (str | None): 区域 cn/hk/tw/apac/am/emea
-        select (str): 值字段，默认 flow（流量，byte）
+        bucket_name (str): 空间名称，会拼入 host `<bucket>.mls.cn-east-1.qiniumiku.com`
+        stream_name (str): 流名称，作为路径 `/<StreamName>`
+        time (int | None): 截图时间戳，未指定则为当前时间
+        fname (str | None): 文件名，未指定随机生成
+        img_format (str | None): jpg 或 png
+        pipeline (str | None): 队列名
+        notify (str | None): 回调地址，指定则为异步
+        delete_after_days (int | None): 生命周期，0 为永久
     """
 
-    method = "GET"
-    host = "miku-statd.qiniuapi.com"
-    path = "/statd/v1/traffic/stat/downflow"
+    method = "POST"
+    host = f"{bucket_name}.mls.cn-east-1.qiniumiku.com"
+    path = f"/{stream_name}"
 
     query_params = {
-        "begin": begin,
-        "g": granularity,
-        "select": select,
+        "snapshot": "",
     }
-    if end:
-        query_params["end"] = end
-    if group:
-        query_params["group"] = group
-    if hub:
-        query_params["$hub"] = hub
-    if domain:
-        query_params["$domain"] = domain
-    if stream_name:
-        query_params["$streamName"] = stream_name
-    if area:
-        query_params["$area"] = area
-
     query_string = urlencode(query_params)
-    url = f"https://{host}{path}?{query_string}"
+    url = f"http://{host}{path}?{query_string}"
     print(f"Sending request to: {url}")
 
-    body = "{}"
+    body_dict = {}
+    if time is not None:
+        body_dict["time"] = time
+    if fname is not None:
+        body_dict["fname"] = fname
+    if img_format is not None:
+        body_dict["format"] = img_format
+    if pipeline is not None:
+        body_dict["pipeline"] = pipeline
+    if notify is not None:
+        body_dict["notify"] = notify
+    if delete_after_days is not None:
+        body_dict["deleteAfterDays"] = delete_after_days
+
+    body = json.dumps(body_dict)
 
     signature = generate_signature(method, url, body, AK, SK)
     print(f"生成的签名: {signature}")
@@ -131,21 +129,17 @@ def base64_url_safe_encode(data):
 
 
 if __name__ == "__main__":
-    # 替换为真实的时间、空间/域名等查询条件
-    begin_time = "20260110"
-    end_time = "20260114"
-    hub_name = "sdk-miku-test"
-    domain_name = "miku-test-play.qnsdk.com"
+    bucket_name = "sdk-miku-test"
+    stream_name = "test-yydounai27"
 
-    print("Testing upflow stat API...")
-    response = test_query_upflow_stat(
-        begin=begin_time,
-        end=end_time,
-        granularity="day",
-        group=None,
-        hub=hub_name,
-        domain=domain_name,
-        stream_name="test-yydounai27",
-        select="flow"
+    print(f"Testing snapshot API for stream: {stream_name}")
+    response = test_snapshot(
+        bucket_name=bucket_name,
+        stream_name=stream_name,
+        fname="snapshot-demo2",
+        img_format="jpg",
+        pipeline="",
+        notify="",
+        delete_after_days=40,
     )
     print(f"响应内容: {response}")

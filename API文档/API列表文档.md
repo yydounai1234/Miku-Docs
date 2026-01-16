@@ -60,3 +60,40 @@
 | [任务运行日志](/mikustream/13231/mikustream-live-pub-log-api) | 查询指定 pub 转推任务的运行日志 |
 | [任务历史记录](/mikustream/13228/mikustream-live-pub-history-api) | 查询 pub 转推任务的历史运行记录 |
 
+## 实时流转码模版
+
+| 接口名称 | 描述 |
+|:--------|:-----|
+| [新增实时流转码模版](/mikustream/13243/mikustream-live-templete-create-api) | 创建一条新的实时转码模板 |
+| [更新实时流转码模版](/mikustream/13244/mikustream-live-templete-update-api) | 修改指定的实时转码模板配置 |
+| [删除实时流转码模版](/mikustream/13245/mikustream-live-templete-delete-api) | 删除指定的实时转码模板 |
+| [获取实时流转码模版具体信息](/mikustream/13246/mikustream-live-templete-info-api) | 查询单个实时转码模板的详情 |
+| [获取实时流转码模版列表](/mikustream/13247/mikustream-live-templete-list-api) | 获取实时转码模板列表 |
+
+## 录制管理
+
+| 接口名称 | 描述 |
+|:--------|:-----|
+| [生成指定时间范围录制文件](/mikustream/13249/mikustream-live-record-create-api) | 根据时间范围触发生成录制文件 |
+| [保存直播截图](/mikustream/api/13270/mikustream-live-record-snapshot-api) | 保存指定流的截图文件 |
+
+## 实用工具
+
+| 接口名称 | 描述 |
+|:--------|:-----|
+| [推流地址拼接](/mikustream/api/13269/mikustream-live-tool-query-publishdomain-api) | 生成推流地址 |
+| [播放地址拼接](/mikustream/api/13268/mikustream-live-tool-query-playdomain-api) | 生成播放地址 |
+| [创建 apikey](/mikustream/api/13264/mikustream-live-tool-create-apikey-api) | 创建新的 apikey |
+| [删除 apikey](/mikustream/api/13265/mikustream-live-tool-delete-apikey-api) | 删除指定 apikey |
+| [重命名 apikey](/mikustream/api/13266/mikustream-live-tool-rename-apikey-api) | 修改 apikey 名称 |
+| [apikey 列表](/mikustream/api/13267/mikustream-live-tool-apikey-list-api) | 查询 apikey 列表 |
+
+## 数据统计
+
+| 接口名称 | 描述 |
+|:--------|:-----|
+| [查询直播上行流量](/mikustream/api/13260/mikustream-live-log-upflow-api) | 按时间粒度查询上行流量 |
+| [查询直播下行流量](/mikustream/api/13261/mikustream-live-log-downflow-api) | 按时间粒度查询下行流量 |
+| [查询流历史数据](/mikustream/api/13258/mikustream-live-log-history-api) | 查询单条流的历史指标 |
+| [查询离线日志](/mikustream/api/13257/mikustream-live-log-offline-api) | 查询离线日志列表 |
+| [查询切分离线日志](/mikustream/api/13259/mikustream-live-log-split-api) | 查询切分后的离线日志信息 |

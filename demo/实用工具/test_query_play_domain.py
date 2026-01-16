@@ -2,6 +2,7 @@ import os
 import hmac
 import hashlib
 import base64
+import json
 from urllib.parse import urlencode, urlparse
 from http.client import HTTPSConnection, HTTPConnection
 
@@ -10,59 +11,25 @@ AK = os.getenv("Access_key")
 SK = os.getenv("Secret_key")
 
 
-def test_query_upflow_stat(
-    begin,
-    end=None,
-    granularity="5min",
-    group=None,
-    hub=None,
-    domain=None,
-    stream_name=None,
-    area=None,
-    select="flow",
-):
+def test_query_play_domain(bucket_name, stream_key, domain, expire_time=300):
     """
-    查询直播上行流量。
+    播放地址拼接，返回拉流 URL。
 
     Args:
-        begin (str): 开始时间，格式 20060102 或 20060102150405
-        end (str | None): 结束时间，超过当前时间则取当前时间
-        granularity (str): 时间粒度，5min/hour/day/month
-        group (str | None): 分组字段，可取 hub/domain/streamName/area 等条件字段
-        hub (str | None): 直播空间名
-        domain (str | None): 域名
-        stream_name (str | None): 流名
-        area (str | None): 区域 cn/hk/tw/apac/am/emea
-        select (str): 值字段，默认 flow（流量，byte）
+        bucket_name (str): 空间名称，用于拼 host `<bucket>.mls.cn-east-1.qiniumiku.com`
+        stream_key (str): 流名称，对应路径 `/<streamKey>`
+        domain (str): 拉流域名
+        expire_time (int): 过期秒数，默认 300，0 表示不过期
     """
 
-    method = "GET"
-    host = "miku-statd.qiniuapi.com"
-    path = "/statd/v1/traffic/stat/downflow"
+    method = "POST"
+    host = f"{bucket_name}.mls.cn-east-1.qiniumiku.com"
+    path = f"/{stream_key}"
 
-    query_params = {
-        "begin": begin,
-        "g": granularity,
-        "select": select,
-    }
-    if end:
-        query_params["end"] = end
-    if group:
-        query_params["group"] = group
-    if hub:
-        query_params["$hub"] = hub
-    if domain:
-        query_params["$domain"] = domain
-    if stream_name:
-        query_params["$streamName"] = stream_name
-    if area:
-        query_params["$area"] = area
-
-    query_string = urlencode(query_params)
-    url = f"https://{host}{path}?{query_string}"
+    url = f"http://{host}{path}?playUrl"
     print(f"Sending request to: {url}")
 
-    body = "{}"
+    body = json.dumps({"expireTime": expire_time, "domain": domain})
 
     signature = generate_signature(method, url, body, AK, SK)
     print(f"生成的签名: {signature}")
@@ -131,21 +98,15 @@ def base64_url_safe_encode(data):
 
 
 if __name__ == "__main__":
-    # 替换为真实的时间、空间/域名等查询条件
-    begin_time = "20260110"
-    end_time = "20260114"
-    hub_name = "sdk-miku-test"
-    domain_name = "miku-test-play.qnsdk.com"
+    bucket_name = "sdk-miku-test"
+    stream_key = "yydounai33"
+    play_domain = "miku-test-play.qnsdk.com"
 
-    print("Testing upflow stat API...")
-    response = test_query_upflow_stat(
-        begin=begin_time,
-        end=end_time,
-        granularity="day",
-        group=None,
-        hub=hub_name,
-        domain=domain_name,
-        stream_name="test-yydounai27",
-        select="flow"
+    print(f"Testing play URL generation for stream: {stream_key}")
+    response = test_query_play_domain(
+        bucket_name=bucket_name,
+        stream_key=stream_key,
+        domain=play_domain,
+        expire_time=30,
     )
     print(f"响应内容: {response}")
