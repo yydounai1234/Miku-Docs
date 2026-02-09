@@ -25,6 +25,7 @@ def test_create_recording_file(
     expire_days=None,
     first_segment_type=None,
     persistent_delete_after_days=None,
+    notify=None,
     host=None,
     timeout=30,
 ):
@@ -42,6 +43,7 @@ def test_create_recording_file(
         expire_days (int): ts 文件过期时间
         first_segment_type (int): 第一个分片类型过滤
         persistent_delete_after_days (int): 生成文件生命周期
+        notify (str): 生成完成后的回调地址
         host (str): 服务域名，默认 mls.cn-east-1.qiniumiku.com
         timeout (int): 请求超时
     """
@@ -70,6 +72,8 @@ def test_create_recording_file(
         body["firstSegmentType"] = first_segment_type
     if persistent_delete_after_days is not None:
         body["persistentDeleteAfterDays"] = persistent_delete_after_days
+    if notify is not None:
+        body["notify"] = notify
 
     body_json = json.dumps(body)
 
