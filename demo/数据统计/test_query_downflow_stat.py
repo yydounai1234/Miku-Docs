@@ -10,7 +10,7 @@ AK = os.getenv("Access_key")
 SK = os.getenv("Secret_key")
 
 
-def test_query_upflow_stat(
+def test_query_downflow_stat(
     begin,
     end=None,
     granularity="5min",
@@ -137,8 +137,8 @@ if __name__ == "__main__":
     hub_name = "sdk-miku-test"
     domain_name = "miku-test-play.qnsdk.com"
 
-    print("Testing upflow stat API...")
-    response = test_query_upflow_stat(
+    print("Testing downflow stat API...")
+    response = test_query_downflow_stat(
         begin=begin_time,
         end=end_time,
         granularity="day",

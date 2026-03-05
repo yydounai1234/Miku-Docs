@@ -11,7 +11,7 @@ AK = os.getenv("Access_key")
 SK = os.getenv("Secret_key")
 
 
-def test_create_stream(bucket_name, stream_key):
+def test_delete_stream(bucket_name, stream_key):
     """
     测试创建流接口
 
@@ -105,5 +105,5 @@ if __name__ == "__main__":
     bucket_name = "test-bucket-name"
     stream_key = "test-stream"
     print(f"Testing delete stream API with bucket name: {bucket_name}, stream key: {stream_key}")
-    response = test_create_stream(bucket_name, stream_key)
+    response = test_delete_stream(bucket_name, stream_key)
     print(f"响应内容: {response}")

@@ -11,13 +11,12 @@ AK = os.getenv("Access_key")
 SK = os.getenv("Secret_key")
 
 
-def test_create_pub_task(task_body, use_oversea=False):
+def test_create_pub_task(task_body):
     """
     测试创建 pub 转推任务接口
 
     Args:
         task_body (dict): 任务请求体，需包含 name/sourceUrls/runType/forwardUrls 等字段
-        use_oversea (bool): 是否使用海外域名 pili-hw-pub.qiniuapi.com
     """
 
     # 接口信息
@@ -140,5 +139,5 @@ if __name__ == "__main__":
     }
 
     print("Testing create pub task API...")
-    response = test_create_pub_task(task_body, use_oversea=False)
+    response = test_create_pub_task(task_body)
     print(f"响应内容: {response}")
