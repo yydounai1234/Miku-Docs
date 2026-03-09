@@ -8,7 +8,8 @@ from urllib.parse import urlparse
 from http.client import HTTPSConnection, HTTPConnection
 
 # 你的 AK 和 SK
-
+AK = os.getenv("Access_key")
+SK = os.getenv("Secret_key")
 def test_list_buckets():
     """
     测试列举空间接口
